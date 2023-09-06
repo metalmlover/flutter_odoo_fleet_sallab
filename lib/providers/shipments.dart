@@ -1,8 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_odoo_fleet_sallab/models/shipment.dart';
 
 class Shipments {
-  List<Shipment> _shipments = [
+  final List<Shipment> _shipments = [
 // Shipment(id: fd)
   ];
 
