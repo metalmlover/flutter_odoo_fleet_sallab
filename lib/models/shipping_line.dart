@@ -15,7 +15,7 @@ class ShippingLine {
   int shipmentID;
   String hourFrom;
   String hourTo;
-  double lineCost;
   Car car;
   String? carType;
+  double lineCost;
 }
