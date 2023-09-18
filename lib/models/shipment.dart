@@ -8,19 +8,19 @@ class Shipment {
   Shipment({
     required this.id,
     required this.name, //shippin ref ex SHIP/001
-    required this.customer,
+    this.customer,
     this.totalShippingCost,
-    required this.orders,
-    required this.shippingLines,
-    required this.shippingCostLines,
+    this.orders,
+    this.shippingLines,
+    this.shippingCostLines,
   });
 
   //int id;
   String id;
   String name;
-  Customer customer;
+  Customer? customer;
   double? totalShippingCost;
-  List<String> orders;
-  List<ShippingLine> shippingLines;
-  List<ShippingCost> shippingCostLines;
+  List<String>? orders;
+  List<ShippingLine>? shippingLines;
+  List<ShippingCost>? shippingCostLines;
 }

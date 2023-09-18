@@ -25,6 +25,11 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'fleet_sallab',
+        theme: ThemeData(
+          primarySwatch: Colors.purple,
+          fontFamily: 'Lato',
+        ),
+        debugShowCheckedModeBanner: false,
         home: const ShipmentScreen(),
         routes: {
           ShipmentDetailScreen.routeName: (ctx) => const ShipmentDetailScreen(),

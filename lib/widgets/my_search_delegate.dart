@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+//import 'package:flutter_odoo_fleet_sallab/providers/customers.dart';
+import 'package:flutter_odoo_fleet_sallab/providers/shipments.dart';
+import 'package:flutter_odoo_fleet_sallab/widgets/shipment_item.dart';
+import 'package:provider/provider.dart';
 
 class MySearchDelegate extends SearchDelegate {
   List<String> searchResults = ['A', 'B', 'C'];
@@ -32,28 +36,26 @@ class MySearchDelegate extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    // final customer = Provider.of<Customers>(context);
+    final shipmentsData = Provider.of<Shipments>(context);
+    //final customersData = Provider.of<Customers>(context);
 
-    // final sugges = customer.searchCustomerByPhone(query);
+    // List<Customers> suggestions = searchResults.where((searchResult) {
+    //   final result = searchResult.toLowerCase();
+    //   final input = query.toLowerCase();
+    //   return result.contains(input);
+    // }).toList();
 
-    List<String> suggestions = searchResults.where((searchResult) {
-      final result = searchResult.toLowerCase();
-      final input = query.toLowerCase();
-      return result.contains(input);
-    }).toList();
+    //final suggestions = customersData.searchCustomerByPhone(query);
+
+    if (query.isEmpty) {}
 
     return ListView.builder(
-      itemBuilder: (context, index) {
-        final suggestion = suggestions[index];
-        return ListTile(
-          title: Text(suggestion),
-          onTap: () {
-            query = suggestion;
-            showResults(context);
-          },
-        );
-      },
-      itemCount: suggestions.length,
+      scrollDirection: Axis.vertical,
+      shrinkWrap: true,
+      itemBuilder: (context, index) => ShipmentItem(
+        shipmentsData.shipments[index],
+      ),
+      itemCount: shipmentsData.shipments.length,
     );
   }
 }

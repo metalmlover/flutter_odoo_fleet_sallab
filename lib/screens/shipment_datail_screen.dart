@@ -12,6 +12,11 @@ class ShipmentDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final shipmentID = ModalRoute.of(context)!.settings.arguments as String;
     final loadedShipment = Provider.of<Shipments>(context).findById(shipmentID);
+
+    final shippingLines = loadedShipment.shippingLines;
+    final shippingCostLines = loadedShipment.shippingCostLines;
+    final orders = loadedShipment.orders;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(loadedShipment.name),
@@ -37,7 +42,7 @@ class ShipmentDetailScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Customer Name: ${loadedShipment.customer.name}',
+                      'Customer Name: ${loadedShipment.customer?.name}',
                       style: Theme.of(context).textTheme.titleLarge!.copyWith(
                             color: Theme.of(context).colorScheme.primary,
                             fontWeight: FontWeight.bold,
@@ -55,7 +60,7 @@ class ShipmentDetailScreen extends StatelessWidget {
                     const SizedBox(height: 5),
                     Row(
                       children: [
-                        for (final shipmentOrder in loadedShipment.orders)
+                        for (final shipmentOrder in orders!)
                           Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(50),
@@ -81,7 +86,7 @@ class ShipmentDetailScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 14),
                     Text(
-                      'Customer Phone: ${loadedShipment.customer.phone}',
+                      'Customer Phone: ${loadedShipment.customer!.phone}',
                       style: Theme.of(context).textTheme.titleLarge!.copyWith(
                             color: Theme.of(context).colorScheme.primary,
                             fontWeight: FontWeight.bold,
@@ -89,7 +94,7 @@ class ShipmentDetailScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 14),
                     Text(
-                      'Customer Address: ${loadedShipment.customer.address}',
+                      'Customer Address: ${loadedShipment.customer!.address}',
                       style: Theme.of(context).textTheme.titleLarge!.copyWith(
                             color: Theme.of(context).colorScheme.primary,
                             fontWeight: FontWeight.bold,
@@ -107,56 +112,65 @@ class ShipmentDetailScreen extends StatelessWidget {
                 scrollDirection: Axis.vertical,
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
-                  child: DataTable(columns: const [
-                    DataColumn(label: Text('ID')),
-                    DataColumn(label: Text('Shipment ID')),
-                    DataColumn(label: Text('Hour From')),
-                    DataColumn(label: Text('hourTo')),
-                    DataColumn(label: Text('Line Cost')),
-                    DataColumn(label: Text('Car')),
-                    DataColumn(label: Text('Car Type')),
-                  ], rows: [
-                    for (final shipmentLine in loadedShipment.shippingLines)
-                      DataRow(
-                        cells: [
-                          DataCell(Text('${shipmentLine.id}')),
-                          DataCell(Text('${shipmentLine.shipmentID}')),
-                          DataCell(Text(shipmentLine.hourFrom)),
-                          DataCell(Text(shipmentLine.hourTo)),
-                          DataCell(Text('${shipmentLine.lineCost}')),
-                          DataCell(Text(shipmentLine.car.name)),
-                          DataCell(Text('${shipmentLine.lineCost}')),
-                        ],
-                      ),
-                  ]),
+                  child: DataTable(
+                    columnSpacing: 20,
+                    columns: const [
+                      DataColumn(label: Text('ID')),
+                      DataColumn(label: Text('Shipment ID')),
+                      DataColumn(label: Text('Hour From')),
+                      DataColumn(label: Text('hourTo')),
+                      DataColumn(label: Text('Line Cost')),
+                      DataColumn(label: Text('Car')),
+                      DataColumn(label: Text('Car Type')),
+                    ],
+                    rows: [
+                      for (final shipmentLine in shippingLines!)
+                        DataRow(
+                          cells: [
+                            DataCell(Text('${shipmentLine.id}')),
+                            DataCell(Text('${shipmentLine.shipmentID}')),
+                            DataCell(Text(shipmentLine.hourFrom)),
+                            DataCell(Text(shipmentLine.hourTo)),
+                            DataCell(Text('${shipmentLine.lineCost}')),
+                            DataCell(Text(shipmentLine.car.name)),
+                            DataCell(Text('${shipmentLine.lineCost}')),
+                          ],
+                        ),
+                    ],
+                  ),
                 ),
               ),
             ),
             const SizedBox(height: 20),
-            SizedBox(
-              height: 220,
-              width: double.infinity,
-              child: SingleChildScrollView(
-                scrollDirection: Axis.vertical,
+            Center(
+              child: SizedBox(
+                height: 220,
+                // width: double.infinity,
                 child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: DataTable(columns: const [
-                    DataColumn(label: Text('ID')),
-                    DataColumn(label: Text('Area')),
-                    DataColumn(label: Text('Cost')),
-                    DataColumn(label: Text('Type')),
-                  ], rows: [
-                    for (final shipmentCostLine
-                        in loadedShipment.shippingCostLines)
-                      DataRow(
-                        cells: [
-                          DataCell(Text('${shipmentCostLine.id}')),
-                          DataCell(Text(shipmentCostLine.area)),
-                          DataCell(Text('${shipmentCostLine.cost}')),
-                          DataCell(Text('${shipmentCostLine.type}')),
-                        ],
-                      ),
-                  ]),
+                  scrollDirection: Axis.vertical,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: DataTable(
+                      columnSpacing: 40,
+                      columns: const [
+                        DataColumn(label: Text('ID')),
+                        DataColumn(label: Text('Area')),
+                        DataColumn(label: Text('Cost')),
+                        DataColumn(label: Text('Type')),
+                      ],
+                      rows: [
+                        for (final shipmentCostLine in shippingCostLines!)
+                          DataRow(
+                            cells: [
+                              DataCell(Text('${shipmentCostLine.id}')),
+                              DataCell(Text(shipmentCostLine.area)),
+                              DataCell(Text('${shipmentCostLine.cost}')),
+                              DataCell(Text('${shipmentCostLine.type}')),
+                            ],
+                          ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
             ),

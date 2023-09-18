@@ -22,7 +22,7 @@ class _ShipmentItemState extends State<ShipmentItem> {
     return Card(
       margin: const EdgeInsets.all(10),
       child: ListTile(
-        title: Text(widget.shipment.customer.name),
+        title: Text(widget.shipment.customer?.name ?? ''),
         subtitle: Text('${widget.shipment.orders}'),
         trailing: DropdownButton(
           value: _selectedShipped,
